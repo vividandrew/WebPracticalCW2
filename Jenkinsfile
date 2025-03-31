@@ -24,8 +24,8 @@ pipeline {
             steps{
                 echo ' Deploying Application... '
                 sshagent(credentials: ['9ebc0e51-9700-44b8-a262-5981f4c57a95']){
-                                    sh 'rsync --progress ./* agent@192.168.0.204:/home/agent/'
-                                    sh 'ssh agent@192.168.0.204 docker start webserver'
+                                    sh 'rsync --progress ./* agent@192.168.6.204:/home/agent/'
+                                    sh 'ssh agent@192.168.6.204 docker start webserver'
                                 }
             }
         }
