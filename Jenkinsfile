@@ -15,7 +15,7 @@ pipeline {
                 sh 'docker stop webserver'
                 sh 'docker rm webserver'
                 sh 'docker image inspect vividsoushi/uniwebserver:latest'
-                sh 'docker run --name webserver -p 3640:3640 -d vividsoushi/webserver:latest'
+                sh 'docker run --name webserver -p 3620:3620 -d vividsoushi/webserver:latest'
                 sh 'docker stop webserver'
             }
         }

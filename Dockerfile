@@ -9,6 +9,7 @@ COPY ./controller ./controller
 COPY ./routes ./routes
 COPY ./view ./view
 COPY ./model ./model
+COPY ./.env ./.env
 
 #Static items
 COPY ./public ./public

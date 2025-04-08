@@ -1,9 +1,7 @@
 import express from "express";
-import path from "path";
 const router = express.Router();
 
 //Functions used for the view
-import * as controller from "../controller/controller.js"
 import * as homeController from "../controller/homeController.js";
 
 //Set Routes names
@@ -13,14 +11,19 @@ const route = {
         about: "/about",
         courses:"/course",
         course: "/course/:id",
-        login: "/login"
+        login: "/login",
+        register: "/signup"
     },
     user:{
         dashboard: "/dashboard",
+        profile: {
+            view : '/user/details',
+            edit : '/user/edit',
+            delete: '/user/delete'
+        },
         course : {
             view_all : "/courses",
             read : "/user/course/:id",
-            update : "/user/course/update/:id",
             delete : "/admin/course/quit/:id",
         },
     },
@@ -48,6 +51,8 @@ router.get(route.home.index, homeController.home);
 
 router.get(route.home.login, homeController.login);
 router.post(route.home.login, homeController.loginPost);
+
+router.post(route.home.index, homeController.logoutPost);
 
 /* Will be used as example routes
 router.get('/', controller.root);

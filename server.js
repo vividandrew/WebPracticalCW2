@@ -2,9 +2,14 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import nedb from 'nedb';
+import nedb from '@seald-io/nedb';
 import User from './model/user.js';
 import crypto from 'crypto';
+import * as dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+
+
+dotenv.config();
 
 // init database tables
 import {userdb} from './database.js';
@@ -27,6 +32,7 @@ userdb.findOne({username:admin.username}, (err, user) =>
 //init express
 const app = express();
 app.use(express.urlencoded({extended:true})) //used to pass through posts data
+app.use(cookieParser()); //used for passing cookies
 
 // Set path for website
 const __filename = fileURLToPath(import.meta.url);

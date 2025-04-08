@@ -1,4 +1,4 @@
-import NeDB from 'nedb';
+import NeDB from '@seald-io/nedb';
 
 // init database tables
 const userdb = new NeDB({filename:'./db/user.db', autoload: true});
