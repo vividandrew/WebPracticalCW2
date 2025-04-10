@@ -12,8 +12,10 @@ pipeline {
         {
             steps{
                 echo ' Testing Docker Image... '
-                sh 'docker stop cw2'
-                sh 'docker rm cw2'
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE'){
+                    sh 'docker stop cw2'
+                    sh 'docker rm cw2'
+                }
                 sh 'docker image inspect cw2/webserver:latest'
                 sh 'docker run --name cw2 -p 3620:3620 -d -v "${pwd}/db:/app/db" cw2/webserver:latest'
                 sh 'docker stop cw2'
