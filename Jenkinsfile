@@ -18,9 +18,10 @@ pipeline {
                 }
                 sh 'docker image inspect cw2/webserver:latest'
                 sh 'docker run --name cw2 -p 3620:3620 -d -v "${pwd}/db:/app/db" cw2/webserver:latest'
-                sh 'docker stop cw2'
+                //sh 'docker stop cw2'
             }
         }
+        /*
         stage("Deploy application...")
         {
             steps{
@@ -30,6 +31,6 @@ pipeline {
                                     sh 'ssh agent@192.168.6.204 docker start cw2'
                                 }
             }
-        }
+        }*/
     }
 }
