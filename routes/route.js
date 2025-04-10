@@ -46,13 +46,19 @@ const route = {
     },
 
 }
-
+// [[HOMECONTROLLER]]
 router.get(route.home.index, homeController.home);
+router.get(route.home.about, homeController.about);
+router.get(route.home.courses, homeController.showCourses);
+router.get(route.home.course, homeController.showCourse);
 
+// LOGIN & LOGOUT
 router.get(route.home.login, homeController.login);
 router.post(route.home.login, homeController.loginPost);
 
 router.post(route.home.index, homeController.logoutPost);
+
+//TODO: Register route
 
 /* Will be used as example routes
 router.get('/', controller.root);
