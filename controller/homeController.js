@@ -121,6 +121,7 @@ export function loginPost(req,res)
                 }
             }
         }else{
+            //TODO: Redirect user to login page with error message
             let data = {
                 fullname: "[!!] Error, could not get user",
             }
