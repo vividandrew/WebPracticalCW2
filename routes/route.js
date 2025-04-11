@@ -3,6 +3,8 @@ const router = express.Router();
 
 //Functions used for the view
 import * as homeController from "../controller/homeController.js";
+import * as adminController from '../controller/adminController.js';
+import * as userController from '../controller/userController.js';
 
 //Set Routes names
 const route = {
@@ -58,7 +60,15 @@ router.post(route.home.login, homeController.loginPost);
 
 router.post(route.home.index, homeController.logoutPost);
 
-//TODO: Register route
+// Register route
+router.get(route.home.register, homeController.register);
+router.post(route.home.register, homeController.registerPost);
+
+// [[ADMINCONTROLLER]]
+router.get(route.admin.dashboard, adminController.dashboard);
+
+// [[USERCONTROLLER]]
+router.get(route.user.dashboard, userController.dashboard);
 
 /* Will be used as example routes
 router.get('/', controller.root);

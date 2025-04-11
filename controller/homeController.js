@@ -4,6 +4,7 @@ import crypto from "crypto";
 
 //Imported Models
 import course from '../model/course.js';
+import user from '../model/user.js';
 
 // set environment variables
 const __filename = fileURLToPath(import.meta.url);
@@ -71,7 +72,7 @@ export function showCourse(req, res)
         }
     }
     classdb.findOne({_id:req.params.id}, (err, course)=>{
-        if(course == null) res.redirect('/course');
+        if(course == null) return res.redirect('/course');
         if(err) console.log(err);
         data.course = course;
         res.status(200);
@@ -84,7 +85,7 @@ export function login (req,res)
     res.status(200);
     if(req.cookies && req.cookies.jwt)
     {
-        res.redirect('/');
+        return res.redirect('/');
     }
     res.render(path.join(PATH,'./home/login.mustache'));
 }
@@ -97,7 +98,7 @@ export function loginPost(req,res)
     //check if user is logged in,
     if(req.cookies && req.cookies.jwt)
     {
-        res.redirect('/');
+        return res.redirect('/');
     }
     userdb.findOne({username: req.body.username}, function(err,user){
         if(user)
@@ -105,12 +106,19 @@ export function loginPost(req,res)
             if(user.password === crypto.createHash('sha256').update(req.body.password).digest('hex'))
             {
                 let payload = {
-                    username: user.username
+                    _id: user._id
                 };
                 let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 60});
                 res.cookie("jwt", accessToken);
 
-                res.render(path.join(PATH, './user/dashboard.mustache'),user);
+                if(user.role === 'Admin')
+                {
+                    return res.redirect('/admin/dashboard')
+                    //res.render(path.join(PATH, './admin/dashboard.mustache'),user);
+                }else{
+                    return res.redirect('/dashboard')
+                    //res.render(path.join(PATH, './user/dashboard.mustache'),user);
+                }
             }
         }else{
             let data = {
@@ -121,10 +129,51 @@ export function loginPost(req,res)
     });
 }
 
+
+export function register (req,res)
+{
+    res.status(200);
+    if(req.cookies && req.cookies.jwt)
+    {
+        return res.redirect('/');
+    }
+    res.render(path.join(PATH,'./home/register.mustache'));
+}
+
+
+export function registerPost(req,res)
+{
+    res.status(200);
+    //check if user is logged in,
+    if(req.cookies && req.cookies.jwt)
+    {
+        return res.redirect('/');
+    }
+    var u = new user(req.body.username,crypto.createHash('sha256').update(req.body.password).digest('hex'),req.body.fullname,'User');
+    userdb.findOne({username: req.body.username}, function(err,user){
+        if(user) {
+            //Send back error to register page
+            return res.redirect('/signup')
+        }else{
+            userdb.insert(u, (err, result) =>{
+            if(err){
+                console.log(err)
+            }else{
+                let payload = {
+                    _id: result._id
+                };
+                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 60});
+                res.cookie("jwt", accessToken);
+                return res.redirect('/dashboard')
+            }});
+        }
+    });
+}
+
 export function logoutPost(req,res)
 {
     //final check to ensure there are cookies registered to the user
     //TODO: check if the cookie 'jwt' does not exist first
-    if(!req.cookies) res.redirect('/');
+    if(!req.cookies) return res.redirect('/');
     res.clearCookie('jwt').status(200).redirect('/');
 }

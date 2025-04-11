@@ -15,7 +15,7 @@ dotenv.config();
 import {userdb, classdb} from './database.js';
 
 // initial user
-var admin = new User('0','admin',crypto.createHash('sha256').update('changeme').digest('hex'),'Admin','Admin');
+var admin = new User('admin',crypto.createHash('sha256').update('changeme').digest('hex'),'Admin','Admin');
 userdb.findOne({username:admin.username}, (err, user) =>
 {
 	if(!user)
