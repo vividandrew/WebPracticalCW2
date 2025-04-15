@@ -67,9 +67,6 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', path.join(PATH, 'shared'));
 
-// Environment variables variables
-const PORT = 3620;
-
 // Set static files CSS, Javascript, etc
 express.static(__dirname);
 app.use(express.static("public"));
@@ -78,6 +75,6 @@ app.use(express.static("public"));
 import router from './routes/route.js';
 app.use('/', router);
 
-app.listen(PORT, () => {
-	console.log("Node web server is running on port " + PORT);
+app.listen(process.env.PORT, () => {
+	console.log("Node web server is running on port " + process.env.PORT);
 });
