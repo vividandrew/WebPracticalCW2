@@ -10,7 +10,7 @@ import user from '../model/user.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PATH = path.join(__dirname, '../view');
-import {userdb, classdb} from '../database.js';
+import {userdb, classdb, userClassesdb} from '../database.js';
 import jwt from "jsonwebtoken";
 
 export function home(req, res)
@@ -62,22 +62,52 @@ export function showCourse(req, res)
 {
 
     var data = {
-        accessToken: null,
+        accessToken: null
     };
     res.status(200);
     if(req.cookies && req.cookies.jwt){
         data = {
             accessToken: req.cookies.jwt,
             course: null,
+            count: null,
+            full: false,
+            alreadyRegistered: false,
         }
     }
+    userClassesdb.count({courseid:req.params.id}, (err, count)=> {
+        classdb.findOne({_id:req.params.id}, (err, course)=>{
+            if(course == null) return res.redirect('/course');
+            if(err) console.log(err);
+
+            //is there a cookie with the accounts accesstoken?
+            if(data.accessToken){
+                var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+                userClassesdb.findOne({userid:accessToken._id, courseid:req.params.id}, (err, acc) =>{
+                    data.alreadyRegistered = acc != null; // checks if account is already registered to this course
+                    data.course = course;
+                    data.count = count;
+                    data.full = count >= course.maxSize;
+                    res.status(200);
+                    return res.render(path.join(PATH, './home/course.view.mustache'), data);
+                });
+            }else{
+                data.course = course;
+                data.count = count;
+                data.full = count >= course.maxSize;
+                res.status(200);
+                return res.render(path.join(PATH, './home/course.view.mustache'), data);
+            }
+        })
+    });
+
+    /*
     classdb.findOne({_id:req.params.id}, (err, course)=>{
         if(course == null) return res.redirect('/course');
         if(err) console.log(err);
         data.course = course;
         res.status(200);
         res.render(path.join(PATH, './home/course.view.mustache'), data);
-    })
+    })*/
 }
 
 export function login (req,res)

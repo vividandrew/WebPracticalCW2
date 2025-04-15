@@ -26,7 +26,7 @@ const route = {
         course : {
             view_all : "/user/course",
             read : "/user/course/:id",
-            delete : "/admin/course/quit/:id",
+            delete : "/user/course/quit/:id",
         },
     },
     admin:{
@@ -72,6 +72,9 @@ router.get(route.user.dashboard, userController.dashboard);
 
 router.get(route.user.course.view_all, userController.showCourses);
 router.post(route.home.course, userController.registerClass); // register class to user
+
+router.get(route.user.course.delete, userController.quitCourse);
+router.post(route.user.course.delete, userController.quitCoursePost);
 
 /* Will be used as example routes
 router.get('/', controller.root);

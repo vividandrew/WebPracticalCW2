@@ -77,3 +77,43 @@ export function showCourse(req, res)
         res.render(path.join(PATH, './user/course.view.mustache'), data);
     })
 }
+
+export function quitCourse(req, res)
+{
+    if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
+    var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+
+    //TODO: check if the user is currently registered to the class
+    var data = {
+        course: null,
+        accessToken: true,
+    }
+
+    classdb.findOne({_id:req.params.id}, (err, course)=>{
+        if(course == null) return res.redirect('/user/course');
+        if(err) console.log(err);
+        data.course = course;
+        res.status(200);
+        res.render(path.join(PATH, './user/course.quit.mustache'), data);
+    })
+}
+
+export function quitCoursePost(req, res)
+{
+    if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
+    var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+
+    var data = {
+        course: null,
+        accessToken: true,
+    }
+    userClassesdb.remove({courseid:req.params.id}, {multi:false},(err, course)=>{
+        if(err){
+            console.log('Error deleting: ',err);
+        }else{
+            console.log('Deleted', course, ' courses from database')
+        }
+
+        return res.redirect('/user/course');
+    })
+}

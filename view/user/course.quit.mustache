@@ -1,0 +1,6 @@
+{{>head.shared}}
+<h1> Are you sure you want to quit {{course.name}}?</h1>
+<p>{{course.description}}</p>
+<p>Date of course: {{course.date}}</p>
+<form action="/user/course/quit/{{course._id}}" method="POST"><button role="menuitem" tabindex="-1" type="submit" class="block px-4 py-2 text-sm text-gray-700">Quit</button></form>
+{{>tail.shared}}

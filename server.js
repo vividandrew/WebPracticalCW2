@@ -31,10 +31,10 @@ userdb.findOne({username:admin.username}, (err, user) =>
 
 //Create initial classes
 let courses ={
-	c1: new course("Test Course 1", "Short blurb for description", "05/09/2025"),
-	c2: new course("Test Course 2", "Short blurb for description", "05/09/2025"),
-	c3: new course("Test Course 3", "Short blurb for description", "05/09/2025"),
-	c4: new course("Test Course 4", "Short blurb for description", "05/09/2025"),
+	c1: new course("Test Course 1", "Short blurb for description", "05/09/2025", 10),
+	c2: new course("Test Course 2", "Short blurb for description", "05/09/2025", 2),
+	c3: new course("Test Course 3", "Short blurb for description", "05/09/2025", 20),
+	c4: new course("Test Course 4", "Short blurb for description", "05/09/2025", 20),
 }
 
 for(let key in courses)
