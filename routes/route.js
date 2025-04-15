@@ -68,7 +68,7 @@ router.post(route.home.register, homeController.registerPost);
 // [[ADMINCONTROLLER]]
 router.get(route.admin.dashboard, adminController.dashboard);
 
-// user CRUD
+// User CRUD
 // List
 router.get(route.admin.user.view_all, adminController.userList)
 
@@ -86,6 +86,25 @@ router.post(route.admin.user.update, adminController.userUpdatePost);
 // Delete
 router.get(route.admin.user.delete, adminController.userDelete);
 router.post(route.admin.user.delete, adminController.userDeletePost);
+
+// Course CRUD
+// List
+router.get(route.admin.course.view_all, adminController.courseList)
+
+// Create
+router.get(route.admin.course.create, adminController.courseCreate);
+router.post(route.admin.course.create, adminController.courseCreatePost);
+
+// Read
+router.get(route.admin.course.read, adminController.courseRead);
+
+// Update
+router.get(route.admin.course.update, adminController.courseUpdate);
+router.post(route.admin.course.update, adminController.courseUpdatePost);
+
+// Delete
+router.get(route.admin.course.delete, adminController.courseDelete);
+router.post(route.admin.course.delete, adminController.courseDeletePost);
 
 // [[USERCONTROLLER]]
 router.get(route.user.dashboard, userController.dashboard);
