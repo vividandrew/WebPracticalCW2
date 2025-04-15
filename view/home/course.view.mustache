@@ -2,14 +2,17 @@
 <h1>{{course.name}}</h1>
 <p>{{course.description}}</p>
 
-{{#accessToken}}
-    {{^full}}
-        {{^alreadyRegistered}}
-            <form action="/course/{{course._id}}" method="POST"><button role="menuitem" tabindex="-1" type="submit" class="block px-4 py-2 text-sm text-gray-700">Sign up to course {{count}}/{{course.maxSize}}</button></form>
-        {{/alreadyRegistered}}
-        {{#alreadyRegistered}}
-            <h2>You are already registered to this class! view through the dashboard</h2>
-        {{/alreadyRegistered}}
+    {{#accessToken}}
+        {{#full}}
+            <h2>This course is full {{course.maxSize}}/{{course.maxSize}} students registered</h2>
+        {{/full}}
+        {{^full}}
+            {{^alreadyRegistered}}
+                <form action="/course/{{course._id}}" method="POST"><button role="menuitem" tabindex="-1" type="submit" class="block px-4 py-2 text-sm text-gray-700">Sign up to course {{count}}/{{course.maxSize}}</button></form>
+            {{/alreadyRegistered}}
+            {{#alreadyRegistered}}
+                <h2>You are already registered to this class! view through the dashboard</h2>
+            {{/alreadyRegistered}}
         {{/full}}
     {{/accessToken}}
 {{>tail.shared}}

@@ -5,6 +5,7 @@ const router = express.Router();
 import * as homeController from "../controller/homeController.js";
 import * as adminController from '../controller/adminController.js';
 import * as userController from '../controller/userController.js';
+import {userCreatePost} from "../controller/adminController.js";
 
 //Set Routes names
 const route = {
@@ -67,10 +68,31 @@ router.post(route.home.register, homeController.registerPost);
 // [[ADMINCONTROLLER]]
 router.get(route.admin.dashboard, adminController.dashboard);
 
+// user CRUD
+// List
+router.get(route.admin.user.view_all, adminController.userList)
+
+// Create
+router.get(route.admin.user.create, adminController.userCreate);
+router.post(route.admin.user.create, adminController.userCreatePost);
+
+// Read
+router.get(route.admin.user.read, adminController.userRead);
+
+// Update
+router.get(route.admin.user.update, adminController.userUpdate);
+router.post(route.admin.user.update, adminController.userUpdatePost);
+
+// Delete
+router.get(route.admin.user.delete, adminController.userDelete);
+router.post(route.admin.user.delete, adminController.userDeletePost);
+
 // [[USERCONTROLLER]]
 router.get(route.user.dashboard, userController.dashboard);
 
 router.get(route.user.course.view_all, userController.showCourses);
+router.get(route.user.course.read, userController.showCourse);
+
 router.post(route.home.course, userController.registerClass); // register class to user
 
 router.get(route.user.course.delete, userController.quitCourse);
