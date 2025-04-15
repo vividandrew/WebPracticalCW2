@@ -283,7 +283,7 @@ export function courseCreatePost(req, res)
         return res.redirect('/');
     }
 
-    var c = new course(req.body.name, req.body.description, req.body.date, req.body.maxSize);
+    var c = new course(req.body.name, req.body.description, req.body.date, req.body.maxSize, req.body.cost, req.body.location);
     classdb.insert(c, (err, result) => {
         if (err) {
             console.log(err)
@@ -365,7 +365,7 @@ export function courseUpdatePost(req,res)
         return res.redirect('/');
     }
 
-    classdb.update({_id:req.params.id}, {$set: {name:req.body.name, date: req.body.date, description:req.body.description , maxSize: req.body.maxSize}});
+    classdb.update({_id:req.params.id}, {$set: {name:req.body.name, date: req.body.date, description:req.body.description , maxSize: req.body.maxSize, cost: req.body.cost, location: req.body.location}});
     return res.redirect('/admin/course')
 
 

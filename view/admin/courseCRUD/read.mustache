@@ -1,6 +1,8 @@
 {{>admin.head.shared}}
 <h1>{{course.name}}</h1>
-<h5>Date:{{course.date}}</h5>
+<h4>Date:{{course.date}}</h4>
+<h4>Location:{{course.location}}</h4>
+<h4>Cost: {{course.cost}}</h4>
 <h5>Descrition;i</h5>
 <p>{{course.description}}</p>
 <form action="/admin/course/students/{{course._id}}" method="GET"><button role="menuitem" tabindex="-1" type="submit" class="block px-4 py-2 text-sm text-gray-700">Get Students for class</button></form>

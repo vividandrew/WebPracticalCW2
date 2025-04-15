@@ -99,15 +99,6 @@ export function showCourse(req, res)
             }
         })
     });
-
-    /*
-    classdb.findOne({_id:req.params.id}, (err, course)=>{
-        if(course == null) return res.redirect('/course');
-        if(err) console.log(err);
-        data.course = course;
-        res.status(200);
-        res.render(path.join(PATH, './home/course.view.mustache'), data);
-    })*/
 }
 
 export function login (req,res)
@@ -204,7 +195,6 @@ export function registerPost(req,res)
 export function logoutPost(req,res)
 {
     //final check to ensure there are cookies registered to the user
-    //TODO: check if the cookie 'jwt' does not exist first
-    if(!req.cookies) return res.redirect('/');
+    if(!req.cookies || (req.cookies && !req.cookies.jwt)) return res.redirect('/');
     res.clearCookie('jwt').status(200).redirect('/');
 }

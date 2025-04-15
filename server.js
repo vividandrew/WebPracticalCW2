@@ -34,10 +34,10 @@ classdb.find({}, (err, courses)=>{
 		//Create initial classes
 		console.log("Creating Initial courses for sample purposes");
 		let courses ={
-			c1: new course("Test Course 1", "Short blurb for description", "05/09/2025", 10),
-			c2: new course("Test Course 2", "Short blurb for description", "05/09/2025", 2),
-			c3: new course("Test Course 3", "Short blurb for description", "05/09/2025", 20),
-			c4: new course("Test Course 4", "Short blurb for description", "05/09/2025", 20),
+			c1: new course("Test Course 1", "Short blurb for description", "05/09/2025", 10, 109.00, "GCU - Charles Oakly Building"),
+			c2: new course("Test Course 2", "Short blurb for description", "05/09/2025", 2, 109.00, "GCU - Charles Oakly Building"),
+			c3: new course("Test Course 3", "Short blurb for description", "05/09/2025", 20, 109.00, "GCU - Charles Oakly Building"),
+			c4: new course("Test Course 4", "Short blurb for description", "05/09/2025", 20, 109.00, "GCU - Charles Oakly Building"),
 		}
 
 		for(let key in courses)
