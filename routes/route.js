@@ -45,6 +45,7 @@ const route = {
             read : "/admin/course/:id",
             update : "/admin/course/update/:id",
             delete : "/admin/course/delete/:id",
+            receipt : "/admin/course/students/:id",
         },
     },
 
@@ -105,6 +106,9 @@ router.post(route.admin.course.update, adminController.courseUpdatePost);
 // Delete
 router.get(route.admin.course.delete, adminController.courseDelete);
 router.post(route.admin.course.delete, adminController.courseDeletePost);
+
+// Course Receipt
+router.get(route.admin.course.receipt, adminController.printReceipt);
 
 // [[USERCONTROLLER]]
 router.get(route.user.dashboard, userController.dashboard);

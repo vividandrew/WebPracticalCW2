@@ -429,3 +429,49 @@ export function courseDeletePost(req,res)
 
 });
 }
+
+// Reciept
+export function printReceipt(req,res) {
+    if (!req.cookies && !req.cookies.jwt) {
+        return res.redirect('/');
+    }
+    var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+    res.status(200);
+    userdb.findOne({_id: accessToken._id}, (err, acc) => {
+        if (err) console.log(err);
+        if (!acc) console.log(accessToken);
+        if (acc.role !== 'Admin') {
+            return res.redirect('/');
+        }
+        classdb.findOne({_id:req.params.id}, (err, course)=>{
+            var data =
+                {
+                    BusinessName: process.env.BUSINESS_NAME,
+                    staff: user.fullname,
+                    location: "Temp",
+                    course: course,
+                    students: [],
+                }
+            userClassesdb.find({courseid:data.course._id}, (err, courses)=>{
+                if(courses == null){return redirect('/admin/course/', course._id)}
+                var tmp = [] //used as a temp array to await for completion of students list
+                for(var c of courses)
+                {
+                    tmp.push(new Promise((resolve, reject) =>{
+                        userdb.findOne({_id:c.userid}, (err, student)=>{
+                            if(err)return reject(err);
+                            resolve(student);
+
+                        })
+                    }))
+                }
+
+                Promise.all(tmp).then(students =>{
+                    data.students = students;
+                    res.status(200);
+                    res.render(path.join(PATH, './admin/courseCRUD/receipt.mustache'), data)
+                })
+            });
+        });
+    });
+}

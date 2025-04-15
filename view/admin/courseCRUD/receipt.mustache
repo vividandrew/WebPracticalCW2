@@ -1,0 +1,53 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/773ec69111.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</head>
+<body>
+<!-- component -->
+    <div class="flex h-screen w-full items-center justify-center bg-gray-600">
+        <div class="w-80 rounded bg-gray-50 px-6 pt-8 shadow-lg">
+            <a href="/"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="chippz" class="mx-auto w-16 py-4" /></a>
+            <div class="flex flex-col justify-center items-center gap-2">
+                <h4 class="font-semibold">{{BusinessName}}</h4>
+            </div>
+            <div class="flex flex-col justify-center items-center gap-2">
+                <p class="text-xs">{{location}}</p>
+            </div>
+            <div class="flex flex-col justify-center items-center gap-2">
+
+                <p class="flex justify-between">
+                    <span class="text-gray-400">Organizer:</span>
+                    <span>{{staff}}</span>
+                </p>
+            </div>
+            <div class="flex flex-col gap-3 border-b py-12 text-xs">
+                <p class="flex justify-between">
+                    <span class="text-gray-400">Course Id:</span>
+                    <span>{{course._id}}</span>
+                </p>
+            </div>
+            <div class="flex flex-col gap-3 pb-6 pt-2 text-xs">
+                <table class="w-full text-left">
+                    <thead>
+                    <tr class="flex">
+                        <th class="w-full py-12">Students</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#students}}
+                        <tr class="flex">
+                            <td class="flex-1 py-12">{{fullname}}</td>
+                        </tr>
+                    {{/students}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -28,23 +28,29 @@ userdb.findOne({username:admin.username}, (err, user) =>
 		console.log('Admin user already exists,')
 	}
 });
-
-//Create initial classes
-let courses ={
-	c1: new course("Test Course 1", "Short blurb for description", "05/09/2025", 10),
-	c2: new course("Test Course 2", "Short blurb for description", "05/09/2025", 2),
-	c3: new course("Test Course 3", "Short blurb for description", "05/09/2025", 20),
-	c4: new course("Test Course 4", "Short blurb for description", "05/09/2025", 20),
-}
-
-for(let key in courses)
-{
-	var c = courses[key];
-	classdb.insert(c, (err, result)=>
+classdb.find({}, (err, courses)=>{
+	if(courses.length === 0)
 	{
-		if(err) console.log("Error with Course database: " + err);
-	})
-}
+		//Create initial classes
+		console.log("Creating Initial courses for sample purposes");
+		let courses ={
+			c1: new course("Test Course 1", "Short blurb for description", "05/09/2025", 10),
+			c2: new course("Test Course 2", "Short blurb for description", "05/09/2025", 2),
+			c3: new course("Test Course 3", "Short blurb for description", "05/09/2025", 20),
+			c4: new course("Test Course 4", "Short blurb for description", "05/09/2025", 20),
+		}
+
+		for(let key in courses)
+		{
+			var c = courses[key];
+			classdb.insert(c, (err, result)=>
+			{
+				if(err) console.log("Error with Course database: " + err);
+			})
+		}
+	}
+})
+
 
 //init express
 const app = express();
