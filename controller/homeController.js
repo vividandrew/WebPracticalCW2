@@ -111,7 +111,7 @@ export function login (req,res)
     res.render(path.join(PATH,'./home/login.mustache'));
 }
 
-//For testing to be changed
+
 //TODO: Change to check user/ Validating user details
 export function loginPost(req,res)
 {
@@ -129,7 +129,7 @@ export function loginPost(req,res)
                 let payload = {
                     _id: user._id
                 };
-                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 60});
+                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_LIFE});
                 res.cookie("jwt", accessToken);
 
                 if(user.role === 'Admin')
@@ -140,13 +140,11 @@ export function loginPost(req,res)
                     return res.redirect('/dashboard')
                     //res.render(path.join(PATH, './user/dashboard.mustache'),user);
                 }
+            }else{
+                return res.redirect('/login');
             }
         }else{
-            //TODO: Redirect user to login page with error message
-            let data = {
-                fullname: "[!!] Error, could not get user",
-            }
-            res.render(path.join(PATH, './user/dashboard.mustache'),data);
+            return res.redirect('/login');
         }
     });
 }
@@ -184,7 +182,7 @@ export function registerPost(req,res)
                 let payload = {
                     _id: result._id
                 };
-                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 60});
+                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_LIFE});
                 res.cookie("jwt", accessToken);
                 return res.redirect('/dashboard')
             }});
