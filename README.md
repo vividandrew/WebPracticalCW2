@@ -71,4 +71,15 @@ During Installation there is a number of Environment variables that should be ch
 - BUSINESS_NAME: This will be used throughout the website
 - PORT: only to be changed in the bare metal installation should not be changed on docker installation
 - ACCESS_TOKEN_SECRET: This should be changed for each individual person to a random string of your choice, this is used to encrypt session keys not changing this is a security risk
-- ACCESS_TOKEN_LIFE: This should be changed to whatever value the user is comfortable with having the user session to allow for before having to log back in
+- ACCESS_TOKEN_LIFE: This should be changed to whatever value the user is comfortable having the user session to allow for before having to log back in
+
+## After installation
+Some essential things to note, there is a default user, that contains the follow
+- Username: Admin
+- Password: changeme
+
+These details should be updated within the admin tools on user management to a more secure password
+
+Each installation also contains some default courses, if there are no current course in the database already this will populate the installation with some pre-set courses to allow you to see how they are viewed
+
+Both of these happen during the first installation and any time you make a fresh install of the web application
