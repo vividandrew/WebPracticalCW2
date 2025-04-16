@@ -33,32 +33,33 @@
 ### Instalation Instructions
 #### Docker
 1. Clone Repository
-'''bash
-git clone https://github.com/vividandrew/WebPracticalCW2
-cd WebPracticalCW2
-2. Building Docker image and run docker image
-'''bash
+    ```bash
+    git clone https://github.com/vividandrew/WebPracticalCW2
+    cd WebPracticalCW2
+
+3. Building Docker image and run docker image
+    ```bash
    docker build --no-cache --tag cw2/webserver:latest .
    docker run --name cw2 -p 3620:3620 -d -v ./db:/app/db cw2/webserver:latest
 ##### Maintenance
 - Some Changes that should be made before the installation is changing the port exposed you must change the run command to
 
-   '''bash
+   ```bash
    docker run --name cw2 -p {{PORT_NUMBER}}:3620 -d -v ./db:/app/db cw2/webserver:latest
 - Stopping the docker container
-    '''bash
+    ```bash
     docker stop cw2
 - Docker mounts the volumes attached to the database to the local directory in ./db folder this ensures consistency over each restart of the application
 #### Bare Metal
 1. Clone Repository
-   '''bash
+   ```bash
    git clone https://github.com/vividandrew/WebPracticalCW2
    cd WebPracticalCW2
 2. Install packages essential to application
-   '''bash
+   ```bash
     npm install
 3. Build Application and run
-   '''bash
+   ```bash
    npm run build
    npm run start
 
