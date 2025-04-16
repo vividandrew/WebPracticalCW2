@@ -15,6 +15,7 @@ import user from "../model/user.js";
 
 export function dashboard(req, res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -31,6 +32,7 @@ export function dashboard(req, res)
 // [[USER CRUD]]
 export function userList(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -40,6 +42,7 @@ export function userList(req,res)
         return res.redirect('/');
     }
 
+    //Sets the data to grab all the users within the database that is used to display a list of users
     var data = {
         accessToken : true,
         users : userdb.getAllData()
@@ -51,6 +54,7 @@ export function userList(req,res)
 // [CREATE]
 export function userCreate(req, res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -66,6 +70,7 @@ export function userCreate(req, res)
 
 export function userCreatePost(req, res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) => {
@@ -75,6 +80,7 @@ export function userCreatePost(req, res)
         return res.redirect('/');
     }
 
+    //Creates an object of user (Model /model/user.js) that is used as the template to insert into the database
     var u = new user(req.body.username, crypto.createHash('sha256').update(req.body.password).digest('hex'), req.body.fullname, req.body.role);
     userdb.findOne({username: req.body.username}, (err, user) => {
         if (!user) {
@@ -91,6 +97,7 @@ export function userCreatePost(req, res)
 // [READ]
 export function userRead(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -100,6 +107,7 @@ export function userRead(req,res)
         return res.redirect('/');
     }
 
+    //Creates a initial dataset in the scenario that there are no users this will be used on the front end to not loop
     var data = {
         accessToken : true,
         user : null,
@@ -111,7 +119,7 @@ export function userRead(req,res)
             data.user = user;
             res.render(path.join(PATH, './admin/userCRUD/read.mustache'),data);
         }else{
-            return res.redirect('/admin/user');
+            return res.redirect('/admin/user'); //The user doesn't exist, so the url is not a valid one, redirect to user list page
         }
     })
 
@@ -122,6 +130,7 @@ export function userRead(req,res)
 // [UPDATE]
 export function userUpdate(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -131,6 +140,7 @@ export function userUpdate(req,res)
         return res.redirect('/');
     }
 
+    //Sets some initial variables used in the scenario that user doesn't fit either role,
     var data = {
         accessToken : true,
         user : null,
@@ -147,7 +157,7 @@ export function userUpdate(req,res)
 
             res.render(path.join(PATH, './admin/userCRUD/update.mustache'),data);
         }else{
-            return res.redirect('/admin/user');
+            return res.redirect('/admin/user'); //user is not a valid user, so this is an invalid page return to user list page
         }
     })
 
@@ -156,6 +166,7 @@ export function userUpdate(req,res)
 }
 export function userUpdatePost(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -165,6 +176,7 @@ export function userUpdatePost(req,res)
         return res.redirect('/');
     }
 
+    //Updates the user based on the parsed parametes
     userdb.update({_id:req.params.id}, {$set: {username:req.body.username, fullname: req.body.fullname, role: req.body.role}})
     if(req.body.password && req.body.password.trim() !== ""){
         userdb.update({_id:req.params.id}, {$set: {password:crypto.createHash('sha256').update(req.body.password).digest('hex')}})
@@ -180,6 +192,7 @@ export function userUpdatePost(req,res)
 // [DELETE]
 export function userDelete(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -200,7 +213,7 @@ export function userDelete(req,res)
             data.user = user;
             res.render(path.join(PATH, './admin/userCRUD/delete.mustache'),data);
         }else{
-            return res.redirect('/admin/user');
+            return res.redirect('/admin/user'); //user doesn't exist so this page is invalid, redirect to user list page
         }
     })
 
@@ -209,6 +222,7 @@ export function userDelete(req,res)
 }
 export function userDeletePost(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -229,7 +243,7 @@ export function userDeletePost(req,res)
             data.user = user;
             userdb.remove({_id: user._id})
         }
-        return res.redirect('/admin/user');
+        return res.redirect('/admin/user'); //user doesnt exist so this post method is an invalid action, redirect to user list
     })
 
 
@@ -239,6 +253,7 @@ export function userDeletePost(req,res)
 // [[COURSE CRUD]]
 export function courseList(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -248,6 +263,7 @@ export function courseList(req,res)
         return res.redirect('/');
     }
 
+    //Grabs all courses in the database used to display in list
     var data = {
         accessToken : true,
         courses : classdb.getAllData({},(err, course)=>{course.count = userClassesdb.count({courseid:course._id})})
@@ -259,6 +275,7 @@ export function courseList(req,res)
 // [CREATE]
 export function courseCreate(req, res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -274,6 +291,7 @@ export function courseCreate(req, res)
 
 export function courseCreatePost(req, res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) => {
@@ -283,18 +301,20 @@ export function courseCreatePost(req, res)
         return res.redirect('/');
     }
 
+    //Creates a course object (/model/course.js) used as the template structure used to insert into the database
     var c = new course(req.body.name, req.body.description, req.body.date, req.body.maxSize, req.body.cost, req.body.location);
     classdb.insert(c, (err, result) => {
         if (err) {
             console.log(err)
         }
     });
-        return res.redirect('/admin/course')
+        return res.redirect('/admin/course') //redirect the user to the course list after successful completion of creating a course
     });
 }
 // [READ]
 export function courseRead(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -315,7 +335,7 @@ export function courseRead(req,res)
             data.course = course;
             res.render(path.join(PATH, './admin/courseCRUD/read.mustache'),data);
         }else{
-            return res.redirect('/admin/course');
+            return res.redirect('/admin/course'); //course doesn't exist so this page is invalid, return to course list
         }
     })
 
@@ -326,6 +346,7 @@ export function courseRead(req,res)
 // [UPDATE]
 export function courseUpdate(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -347,7 +368,7 @@ export function courseUpdate(req,res)
 
             res.render(path.join(PATH, './admin/courseCRUD/update.mustache'),data);
         }else{
-            return res.redirect('/admin/course');
+            return res.redirect('/admin/course'); // course doesn't exist so this page is invalid, return to course list
         }
     })
 
@@ -356,6 +377,7 @@ export function courseUpdate(req,res)
 }
 export function courseUpdatePost(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -366,7 +388,7 @@ export function courseUpdatePost(req,res)
     }
 
     classdb.update({_id:req.params.id}, {$set: {name:req.body.name, date: req.body.date, description:req.body.description , maxSize: req.body.maxSize, cost: req.body.cost, location: req.body.location}});
-    return res.redirect('/admin/course')
+    return res.redirect('/admin/course') //redirect user to course list after successful updating the course
 
 
 });
@@ -376,6 +398,7 @@ export function courseUpdatePost(req,res)
 // [DELETE]
 export function courseDelete(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -396,13 +419,14 @@ export function courseDelete(req,res)
             data.course = course;
             res.render(path.join(PATH, './admin/courseCRUD/delete.mustache'),data);
         }else{
-            return res.redirect('/admin/course');
+            return res.redirect('/admin/course'); // course doesn't exist so this page is invalid, return to course list
         }
     })
 });
 }
 export function courseDeletePost(req,res)
 {
+    // This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -423,7 +447,7 @@ export function courseDeletePost(req,res)
             data.course = course;
             classdb.remove({_id: course._id})
         }
-        return res.redirect('/admin/course');
+        return res.redirect('/admin/course'); // course doesn't exist so this an invalid action, return to course list
     })
 
 
@@ -431,7 +455,8 @@ export function courseDeletePost(req,res)
 }
 
 // Reciept
-export function printReceipt(req,res) {
+export function printReceipt(req,res){
+// This section of code checks the cookie to ensure the currently logged in user is an admin that has access to this page{
     if (!req.cookies && !req.cookies.jwt) {
         return res.redirect('/');
     }
@@ -443,29 +468,37 @@ export function printReceipt(req,res) {
         if (acc.role !== 'Admin') {
             return res.redirect('/');
         }
+
+        //This grabs the course details that this receipt is for for printing
         classdb.findOne({_id:req.params.id}, (err, course)=>{
             var data =
                 {
-                    BusinessName: process.env.BUSINESS_NAME,
-                    staff: user.fullname,
-                    location: "Temp",
+                    BusinessName: process.env.BUSINESS_NAME, // Sets the business name (.env file) used in display of page
+                    staff: user.fullname, //sets the current logged in user that is printing as the organiser
+                    location: course.location,
                     course: course,
-                    students: [],
+                    students: [], //sets as empty array to allow for push function when awaiting database pulls
                 }
             userClassesdb.find({courseid:data.course._id}, (err, courses)=>{
-                if(courses == null){return redirect('/admin/course/', course._id)}
+                if(courses == null){return redirect('/admin/course/', course._id)} //there is no one registered to this course return to coruse list
                 var tmp = [] //used as a temp array to await for completion of students list
+
+                //This loops through each student that is registered to this course
                 for(var c of courses)
                 {
+
+                    //This is a promise function that essnetially async executes the database search that is either pushed or is rejected
                     tmp.push(new Promise((resolve, reject) =>{
                         userdb.findOne({_id:c.userid}, (err, student)=>{
                             if(err)return reject(err);
-                            resolve(student);
+                            resolve(student); //this returns the student before going to the next search loop
 
                         })
                     }))
                 }
 
+                //This function waits for the async function to fully complete
+                //This action must be done or student list may be missing students from the list
                 Promise.all(tmp).then(students =>{
                     data.students = students;
                     res.status(200);

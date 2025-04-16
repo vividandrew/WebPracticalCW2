@@ -1,13 +1,12 @@
 import express from "express";
 const router = express.Router();
 
-//Functions used for the view
+// All controllers used in the routing separated for use cases
 import * as homeController from "../controller/homeController.js";
 import * as adminController from '../controller/adminController.js';
 import * as userController from '../controller/userController.js';
-import {userCreatePost} from "../controller/adminController.js";
 
-//Set Routes names
+//Set Routes names, used as the global url liost used in router
 const route = {
     home : {
         index : "/",
@@ -120,23 +119,4 @@ router.post(route.home.course, userController.registerClass); // register class 
 
 router.get(route.user.course.delete, userController.quitCourse);
 router.post(route.user.course.delete, userController.quitCoursePost);
-
-/* Will be used as example routes
-router.get('/', controller.root);
-
-// Employees routes
-router.get(route.employee.view_all, controller.employees);
-
-//CRUD
-router.get(route.employee.create, controller.employeeCreate);
-router.post(route.employee.create, controller.employeeCreatePost);
-
-router.get(route.employee.read, controller.employeeRead);
-
-router.get(route.employee.update,controller.employeeUpdate);
-router.post(route.employee.update,controller.employeeUpdatePost);
-
-router.get(route.employee.delete,controller.employeeDelete);
-router.post(route.employee.delete,controller.employeeDeletePost);
-*/
 export default router;

@@ -15,6 +15,7 @@ import jwt from "jsonwebtoken";
 
 export function dashboard(req, res)
 {
+    //Checks if the user is an actual user, otherwise returns to the homepage
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     res.status(200);userdb.findOne({_id:accessToken._id}, (err, acc) =>{
@@ -29,9 +30,12 @@ export function dashboard(req, res)
 
 export function registerClass(req,res)
 {
+    //Checks if the user is an actual user, otherwise returns to the homepage
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var classid = req.params.id;
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+
+    //Creates the user course link using the model (/model/userCourse.js) as the t emplate to insert into the database
     var uc = new userCourse(accessToken._id, classid);
     userClassesdb.insert(uc, (err, result) =>{
         res.redirect('/') //TODO: Instead of redirecting to homepage, redirect to dashboard with status message
@@ -40,10 +44,11 @@ export function registerClass(req,res)
 
 export function showCourses(req,res)
 {
+    //Checks if the user is an actual user, otherwise returns to the homepage
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     userClassesdb.find({userid: accessToken._id}, (err, result)=>{
-        const classIds = result.map(entry => entry.courseid);
+        const classIds = result.map(entry => entry.courseid); //grabs a list of all courses currently registered to
         classdb.find({_id:{$in:classIds}},(cerr, classes)=>{
 
             var data ={
@@ -58,16 +63,18 @@ export function showCourses(req,res)
 
 export function showCourse(req, res)
 {
-
     var data = {
         accessToken: null,
     };
     res.status(200);
+    //Checks if the user is an actual user, otherwise returns to the homepage
     if(req.cookies && req.cookies.jwt){
         data = {
             accessToken: true,
             course: null,
         }
+    }else{
+        return res.redirect('/');
     }
     classdb.findOne({_id:req.params.id}, (err, course)=>{
         if(course == null) return res.redirect('/user/course');
@@ -80,6 +87,7 @@ export function showCourse(req, res)
 
 export function quitCourse(req, res)
 {
+    //Checks if the user is an actual user, otherwise returns to the homepage
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
 
@@ -100,6 +108,7 @@ export function quitCourse(req, res)
 
 export function quitCoursePost(req, res)
 {
+    //Checks if the user is an actual user, otherwise returns to the homepage
     if(!req.cookies && !req.cookies.jwt){return res.redirect('/');}
     var accessToken = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
 
