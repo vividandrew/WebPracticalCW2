@@ -1,6 +1,6 @@
 # WebPractical - CW2
 
-#### A full stack web application built wuth **Node.js**, **Express**, **Mustache** and **NeDB**. a web application that is a course management system
+#### A full stack web application built with **Node.js**, **Express**, **Mustache** and **NeDB**. a web application that is a course management system
 
 ---
 
@@ -68,7 +68,7 @@
 
 ### Environment Variables
 During Installation there is a number of Environment variables that should be changed including
-- BUSINESS_NAME: This will be used throughout the websaite
+- BUSINESS_NAME: This will be used throughout the website
 - PORT: only to be changed in the bare metal installation should not be changed on docker installation
-- ACCESS_TOKEN_SECRET: This should be changed for each indviidual person to a random string of your choice, this is used to encrypt sesesion keys not changing this is a security risk
+- ACCESS_TOKEN_SECRET: This should be changed for each individual person to a random string of your choice, this is used to encrypt session keys not changing this is a security risk
 - ACCESS_TOKEN_LIFE: This should be changed to whatever value the user is comfortable with having the user session to allow for before having to log back in
