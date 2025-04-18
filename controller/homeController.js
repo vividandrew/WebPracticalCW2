@@ -136,7 +136,7 @@ export function loginPost(req,res)
                 let payload = {
                     _id: user._id
                 };
-                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_LIFE});
+                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: Number(process.env.ACCESS_TOKEN_LIFE)});
                 res.cookie("jwt", accessToken); //sets the cookies
 
                 if(user.role === 'Admin')
@@ -193,7 +193,7 @@ export function registerPost(req,res)
                 let payload = {
                     _id: result._id
                 };
-                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_LIFE});
+                let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: Number(process.env.ACCESS_TOKEN_LIFE)});
                 res.cookie("jwt", accessToken);
                 return res.redirect('/dashboard')
             }});
